@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halı Saha Oyuncu Seçimi</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-image: url("arkaplanv2.jpg");
+            background-size: cover;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .list {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #fff;
+            padding: 10px;
+            width: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .list h3 {
+            text-align: center;
+        }
+
+        .list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .list li button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .list li button:hover {
+            background-color: #c0392b;
+        }
+
+        .randomize-button {
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .randomize-button:hover {
+            background-color: #2980b9;
+        }
+
+        .field-container {
+            width: 500px;
+            height: 300px;
+            border: 2px solid #000;
+            border-radius: 10px;
+            background-image: url("image.png");
+            background-size: cover;
+            position: relative;
+        }
+
+        .field {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .player {
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            position: absolute;
+        }
+
+        .add-player {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .add-player input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 200px;
+        }
+
+        .add-player button {
+            padding: 10px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-player button:hover {
+            background-color: #27ae60;
+        }
+
+        .team-a {
+            background-color: #3498db; /* Mavi renk */
+        }
+
+        .team-b {
+            background-color: #f39c12; /* Sarı renk */
+        }
+
+        .player-list {
+            margin-top: 20px;
+            width: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #e74c3c; /* Kırmızı renk */
+            border-radius: 8px;
+        }
+
+        .player-list h3 {
+            text-align: center;
+        }
+
+        .player-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .match-history {
+            margin-top: 20px;
+            width: 600px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .match-history h3 {
+            text-align: center;
+        }
+
+        .match-history ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .match-history li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        label[for="teamSize"], label[for="location"], label[for="time"] {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .match-history li .match-details {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .match-history li .match-details span {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="add-player">
+        <input type="text" id="newPlayer" placeholder="Oyuncu adı girin">
+        <button onclick="addPlayer()">Oyuncu Ekle</button>
+    </div>
+
+    <div class="container">
+        <!-- Takım A Tablosu -->
+        <div class="list team-a" id="teamA">
+            <h3><input type="text" id="teamAName" placeholder="Takım A Adı" value="Takım A"></h3>
+            <ul id="teamAList">
+                <!-- Takım A oyuncuları buraya eklenecek -->
+            </ul>
+        </div>
+
+        <!-- Eklenen Oyuncular Listesi -->
+        <div class="player-list">
+            <h3>Eklenen Oyuncular</h3>
+            <ul id="addedPlayers">
+                <!-- Burada eklenen oyuncular listelenecek -->
+            </ul>
+        </div>
+
+        <!-- Takım B Tablosu -->
+        <div class="list team-b" id="teamB">
+            <h3><input type="text" id="teamBName" placeholder="Takım B Adı" value="Takım B"></h3>
+            <ul id="teamBList">
+                <!-- Takım B oyuncuları buraya eklenecek -->
+            </ul>
+        </div>
+    </div>
+
+    <div>
+        <label for="teamSize">Takım büyüklüğünü seçin:</label>
+        <select id="teamSize" onchange="updateTeamSize()">
+            <option value="7">7 Kişilik Takımlar</option>
+            <option value="8">8 Kişilik Takımlar</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="location">Yer seçin:</label>
+        <select id="location">
+            <option value="Bostanbükü Halısaha">Bostanbükü Halısaha</option>
+            <option value="Karşıyaka Halısaha">Karşıyaka Halısaha</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="time">Saat seçin:</label>
+        <select id="time">
+            <!-- Saat seçenekleri 00.00 - 23.00 arasında -->
+            <script>
+                const timeSelect = document.getElementById("time");
+                for (let hour = 0; hour < 24; hour++) {
+                    let option = document.createElement("option");
+                    let formattedHour = hour < 10 ? `0${hour}` : hour;
+                    option.value = `${formattedHour}:00`;
+                    option.textContent = `${formattedHour}:00`;
+                    timeSelect.appendChild(option);
+                }
+            </script>
+        </select>
+    </div>
+
+    <button class="randomize-button" onclick="randomizeTeamsAndPositions()">Takımları Oluştur ve Diziliş Yap</button>
+
+    <div class="field-container">
+        <div class="field" id="field">
+            <!-- Oyuncular sahada gösterilecek -->
+        </div>
+    </div>
+
+    <div class="match-history">
+        <h3>Yapılıcak Maçlar</h3>
+        <ul id="matchHistory">
+            <!-- Geçmiş maçlar burada listelenecek -->
+        </ul>
+    </div>
+
+    <script>
+        const players = [];
+        let currentTeamA = [];
+        let currentTeamB = [];
+        let teamSize = 7;
+
+        const formations = {
+            "default": [
+                { x: 5, y: 46 }, { x: 20, y: 46 }, { x: 20, y: 15 }, { x: 20, y: 75 },
+                { x: 30, y: 60 }, { x: 40, y: 46 }, { x: 30, y: 30 }
+            ],
+            "eight": [
+                { x: 5, y: 46 }, { x: 20, y: 46 }, { x: 20, y: 15 }, { x: 20, y: 75 },
+                { x: 30, y: 60 }, { x: 40, y: 46 }, { x: 50, y: 30 }, { x: 60, y: 60 }
+            ]
+        };
+
+        function updateTeamSize() {
+            teamSize = parseInt(document.getElementById("teamSize").value);
+        }
+
+        function addPlayer() {
+            const newPlayerInput = document.getElementById("newPlayer");
+            const playerName = newPlayerInput.value.trim();
+
+            if (playerName && !players.includes(playerName)) {
+                players.push(playerName);
+                newPlayerInput.value = "";
+                alert(`Oyuncu ${playerName} listeye eklendi.`);
+                renderPlayers();
+            } else if (players.includes(playerName)) {
+                alert("Bu oyuncu zaten mevcut.");
+            } else {
+                alert("Oyuncu adı boş olamaz.");
+            }
+        }
+
+        function renderPlayers() {
+            const addedPlayersList = document.getElementById("addedPlayers");
+            addedPlayersList.innerHTML = players.map(player =>
+                `<li>${player}</li>`
+            ).join('');
+        }
+
+        function randomizeTeamsAndPositions() {
+            const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
+
+            currentTeamA = shuffledPlayers.slice(0, Math.min(teamSize, players.length / 2));
+            currentTeamB = shuffledPlayers.slice(currentTeamA.length, Math.min(teamSize * 2, players.length));
+
+            renderTeams();
+            arrangePlayersOnField();
+            addMatchToHistory();
+        }
+
+        function renderTeams() {
+            const teamAList = document.getElementById("teamAList");
+            const teamBList = document.getElementById("teamBList");
+
+            teamAList.innerHTML = currentTeamA.map(player =>
+                `<li>${player} <button onclick="removePlayer('${player}', 'A')">Sil</button></li>`
+            ).join('');
+
+            teamBList.innerHTML = currentTeamB.map(player =>
+                `<li>${player} <button onclick="removePlayer('${player}', 'B')">Sil</button></li>`
+            ).join('');
+        }
+
+        function arrangePlayersOnField() {
+            const field = document.getElementById("field");
+            field.innerHTML = "";
+
+            const positionsA = formations[teamSize === 8 ? "eight" : "default"];
+            const positionsB = positionsA.map(pos => ({ x: 93 - pos.x, y: pos.y }));
+
+            currentTeamA.forEach((player, index) => {
+                const playerDiv = document.createElement("div");
+                playerDiv.className = "player";
+                playerDiv.style.left = `${positionsA[index].x}%`;
+                playerDiv.style.top = `${positionsA[index].y}%`;
+                playerDiv.textContent = player[0];
+                field.appendChild(playerDiv);
+            });
+
+            currentTeamB.forEach((player, index) => {
+                const playerDiv = document.createElement("div");
+                playerDiv.className = "player";
+                playerDiv.style.left = `${positionsB[index].x}%`;
+                playerDiv.style.top = `${positionsB[index].y}%`;
+                playerDiv.textContent = player[0];
+                field.appendChild(playerDiv);
+            });
+        }
+
+        function removePlayer(player, team) {
+            if (team === 'A') {
+                currentTeamA = currentTeamA.filter(p => p !== player);
+            } else {
+                currentTeamB = currentTeamB.filter(p => p !== player);
+            }
+            renderTeams();
+            arrangePlayersOnField();
+        }
+
+        function addMatchToHistory() {
+            const matchHistory = document.getElementById("matchHistory");
+            const date = new Date().toLocaleString();
+            const teamAName = document.getElementById("teamAName").value;
+            const teamBName = document.getElementById("teamBName").value;
+            const location = document.getElementById("location").value;
+            const time = document.getElementById("time").value;
+
+            const matchDetails = `<div class="match-details"><span>${date}</span> <span>${teamAName} (${currentTeamA.length}) vs ${teamBName} (${currentTeamB.length})</span> <span>Yer: ${location} Saat: ${time}</span></div>`;
+            const match = `<li>${matchDetails}</li>`;
+            matchHistory.innerHTML += match;
+        }
+    </script>
+</body>
+</html>

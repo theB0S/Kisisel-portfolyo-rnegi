@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kişisel Portfolyo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background 0.3s, color 0.3s;
+        }
+        body.dark-mode {
+            background: #121212;
+            color: white;
+            
+            
+        }
+        header {
+            width: 100%;
+            background: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: relative;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .container {
+            display: flex;
+            width: 80%;
+            margin-top: 20px;
+            
+        }
+        .left-section, .right-section {
+            flex: 1;
+            padding: 20px;
+        }
+        .left-section {
+            background: gray;
+        }
+        .proje {
+            background: gray;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form input, form textarea {
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        form button {
+            background: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .dark-mode-toggle {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        aside {
+            width: 80%;
+            background: gray;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        footer {
+            width: 100%;
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+        .halısaha{
+            text-decoration: none;
+            color: black;
+            text-transform: initial;
+        }
+        .halısaha:hover{
+            color: blue;
+            
+        }
+        li:hover{
+            background-color: gray ;
+            
+            
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Buğra Onur Soykakilli</h1>
+        <p>Ön Yüz Yazılım</p>
+        <span class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</span>
+        <nav>
+            <ul>
+                <li><a href="#hakkimda">Hakkımda</a></li>
+                <li><a href="#projeler">Projeler</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <section class="left-section" id="hakkimda">
+            <h2>Hakkımda</h2>
+            <p>Merhaba ben Karabük Üniversitesinde okuyorum. Yazılım hakkında çok bir bilgim olduğu söylenmez ama öğrenmeye istekliyim. Hem yeni açılan bu bölümde bir şansımın olduğuna inanıyorum hemde hırsım sayesinde birşeyler başarabilmeyi umuyorum. Bunların artısı olarak yaklaşık bir buçuk yıllık bir ilişkim var ve 20 yaşındayım günümüz şartlarında ilişkilere bakarak zoru başardığımı düşünüyorum. İşte benimde olayım bu zoru başarmayı sevmek. </p>
+        </section>
+        
+        <section class="right-section" id="projeler">
+            <h2>Projelerim</h2>
+            <article class="proje">
+                <h3>Proje 1</h3>
+                <a href="halısaha.html" class="halısaha">Halısaha Kadro Kurma</a>
+                <p>Kısaca anlatmak gerekirse halısaha içerisinde kadro kurma yeri ve tarihini ayarlayabildiğimiz bir çalışma.</p>
+            </article>
+            <article class="proje">
+                <h3>Proje 2</h3>
+                <p>Yakında...</p>
+            </article>
+        </section>
+    </div>
+    
+    <aside>
+        <h2>Ekstra Bilgiler</h2>
+        <p>Henüz bir blog ya da haber yazısı çıkarmadım fakat sosyal medyada beni merak ediyorsanız <a href="https://www.instagram.com/bugra.onur.s/" target="_blank">buradan</a> ulaşabilirsiniz.</p>
+    </aside>
+    <div class="iletisi">
+        <section id="iletisim">
+            <h2>İletişim</h2>
+        <address>
+            <p>E-posta: <a href="mailto:ornek@email.com">mrsoykakilli@email.com</a></p>
+            <p>LinkedIn: <a href="#">https://www.linkedin.com/in/buğra-onur-soykakilli-78b271329/</a></p>
+            <p>Twitter: <a href="#">https://x.com/bugraonurs</a></p>
+        </address>
+        <form id="contact-form">
+            <label for="isim">İsim:</label>
+            <input type="text" id="isim" name="isim" required>
+            
+            <label for="email">E-posta:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="mesaj">Mesaj:</label>
+            <textarea id="mesaj" name="mesaj" required></textarea>
+            
+            <button type="submit">Gönder</button>
+        </form>
+        <p id="form-sonuc"></p>
+        </section>
+    </div>
+    
+    
+    
+    <footer>
+        <p>&copy; <time datetime="2024-03-03">2025</time> Tüm Hakları Saklıdır.</p>
+    </footer>
+    
+    <script>
+        document.getElementById("contact-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            document.getElementById("form-sonuc").innerText = "Mesajınız başarıyla gönderildi!";
+        });
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+        function toggleDarkMode() {
+    const body = document.body;
+    const darkModeToggle = document.querySelector(".dark-mode-toggle");
+
+    body.classList.toggle("dark-mode");
+
+    if (body.classList.contains("dark-mode")) {
+        darkModeToggle.textContent = "☀️"; // Koyu modda güneş simgesi
+    } else {
+        darkModeToggle.textContent = "🌙"; // Açık modda ay simgesi
+    }
+}
+
+    </script>
+</body>
+</html>
